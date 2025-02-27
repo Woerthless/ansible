@@ -1,2 +1,5 @@
+[debian_server]
 192.168.0.25
+
+[debian_server_clone]
 192.168.0.73
