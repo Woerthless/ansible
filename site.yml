@@ -5,12 +5,14 @@
   pre_tasks:
 
   - name: install updates (CentOS)
+    tags: always
     dnf:
       update_only: yes
       update_cache: yes
     when: ansible_distribution == "CentOS"
 
   - name: install update (Debian)
+    tags: always
     apt:
       upgrade: dist
       update_cache: yes
@@ -21,6 +23,7 @@
   tasks:
 
   - name: install apache and php for Debian servers
+    tags: apache,apache2,debian
     apt:
       name:
         - apache2
@@ -29,12 +32,22 @@
     when: ansible_distribution == "Debian"
 
   - name: install apache and php for CentOS servers
+    tags: apache,apache2,centos
     dnf:
       name:
         - httpd
         - php
       state: latest
     when: ansible_distribution == "CentOS"
+
+  - name: copy html file to server
+    tags: apache,apache2,html
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
 
 - hosts: debian_server_clone
   become: true
